@@ -1,8 +1,7 @@
-# Module 28
+# Module 29_5
 testing MongoDB
 
-Jest to przerobiona strona z Module 27 która korzysta z MongoDB zamiast db.js.
+Aktualizacja strony o price o dodatkowe informacje z /concerts:
+1. Dodanie performers do dni trwania festiwalu.
 
-Replit jest obecnie płatny. Inne opcje podane też są płatne. Z tego powodu nie udało się tego zrobić. 
-Aplikacje do prostych stron typu "cloudflare pages" nie wspierają serwerów.
-Aplikacja jest skończona ale nie mogę jej nigdzie udostępnić jeśli zostanie podana alternatywa to z chęcią to zrobię
+Brak danych by dodać informacje o festivalach. Dodano samą informacje o festiwalach
