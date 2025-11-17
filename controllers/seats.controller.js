@@ -1,5 +1,5 @@
 const Seats = require('../models/seats.model');
-
+const sanitize = require('mongo-sanitize');
 
 exports.getAll = async (req, res) =>{
     try{
@@ -24,7 +24,7 @@ exports.getRandom = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try{
-        const seats = await Seats.findById(req.params.id);
+        const seats = await Seats.findById(sanitize(req.params.id));
         if(!seats) res.status(404).json({message: 'Not found'});
         else res.json(seats);
     }catch(err){
@@ -34,7 +34,7 @@ exports.getById = async (req, res) => {
 
 exports.addOne = async(req, res) => {
     try{
-        const {day, seat, client, email} = req.body;
+        const {day, seat, client, email} = sanitize(req.body);
         const newSeat = new Seats({day: day, seat: seat, client: client, email: email});
         await newSeat.save();
         const seats = await Seats.find();
@@ -47,8 +47,8 @@ exports.addOne = async(req, res) => {
 
 exports.updateOne = async(req, res) => {
     try{
-        const {day, seat, client, email} = req.body;
-        const seatFound = await Seats.findById(req.params.id);
+        const {day, seat, client, email} = sanitize(req.body);
+        const seatFound = await Seats.findById(sanitize(req.params.id));
         if(!seatFound) res.status(404).json({message: 'Not found'});
         else{
             await Seats.updateOne({_id: req.params.id}, {$set: {day: day, seat: seat, client: client, email: email}});
@@ -62,7 +62,7 @@ exports.updateOne = async(req, res) => {
 
 exports.deleteOne = async(req, res) => {
     try{
-        const seatFound = await Seats.findById(req.params.id);
+        const seatFound = await Seats.findById(sanitize(req.params.id));
         if(!seatFound) res.status(404).json({message: 'Not found'});
         else{
             await Seats.deleteOne({_id: req.params.id});

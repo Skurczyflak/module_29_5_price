@@ -1,5 +1,5 @@
 const Concerts = require('../models/concerts.model');
-
+const sanitize = require('mongo-sanitize');
 
 exports.getAll = async (req, res) =>{
     try{
@@ -23,7 +23,7 @@ exports.getRandom = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try{
-        const concerts = await Concerts.findById(req.params.id);
+        const concerts = await Concerts.findById(sanitize(req.params.id));
         if(!concerts) res.status(404).json({message: 'Not found'});
         else res.json(concerts);
     }catch(err){
@@ -33,7 +33,7 @@ exports.getById = async (req, res) => {
 
 exports.addOne = async(req, res) => {
     try{
-        const {performer, genre, price, day, image} = req.body;
+        const {performer, genre, price, day, image} = sanitize(req.body);
         const newConcert = new Concerts({performer: performer, genre: genre, price: price, day: day, image: image});
         await newConcert.save();
         const concerts = await Concerts.find();
@@ -45,8 +45,8 @@ exports.addOne = async(req, res) => {
 
 exports.updateOne = async(req, res) => {
     try{
-        const {performer, genre, price, day, image} = req.body;
-        const concertFound = await Concerts.findById(req.params.id);
+        const {performer, genre, price, day, image} = sanitize(req.body);
+        const concertFound = await Concerts.findById(sanitize(req.params.id));
         if(!concertFound) res.status(404).json({message: 'Not found'});
         else{
             await Concerts.updateOne({_id: req.params.id}, {$set: {performer: performer, genre: genre, price: price, day: day, image: image}});
@@ -60,7 +60,7 @@ exports.updateOne = async(req, res) => {
 
 exports.deleteOne = async(req, res) => {
     try{
-        const concertFound = await Concerts.findById(req.params.id);
+        const concertFound = await Concerts.findById(sanitize(req.params.id));
         if(!concertFound) res.status(404).json({message: 'Not found'});
         else{
             await Concerts.deleteOne({_id: req.params.id});

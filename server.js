@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const testimonialsRoutes = require('./routes/testimonials.routes'); 
 const concertsRoutes = require('./routes/concerts.routes');
 const seatsRoutes = require('./routes/seats.routes');
-
+const helmet = require('helmet');
 
 const server = app.listen(process.env.PORT || 8000, () => {
   console.log('Server is running...');
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
-
+app.use(helmet());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
